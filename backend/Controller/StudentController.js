@@ -24,4 +24,17 @@ const deleteData = async (req, res) => {
     } 
 }
 
-module.exports = {CreateStudent, readData, deleteData}
+
+// seacrh student
+const searchStudent = async (req, res) => {
+    const searchData = await StudentModel.find({
+        $or: [
+            {fullName: {$regex: req.params.key}},
+        ]
+    })
+    if(searchData){
+        res.send(searchData)
+    }
+}
+
+module.exports = {CreateStudent, readData, deleteData, searchStudent}

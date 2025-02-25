@@ -23,6 +23,13 @@ function StudentList() {
         }).catch((error) => console.log(error))
     }
 
+    const handleSearchStudent = (id) => {
+        const key = id.target.value
+        axios.get(`http://localhost:3000/search/student/${key}`).then((res) => {
+            setGetStudnet(res.data)
+        }).catch(error => console.log(error)) 
+    }
+
     useEffect(() => {
         handleReadStudnet()
     }, [])
@@ -31,7 +38,7 @@ function StudentList() {
         <div className="flex pt-20 justify-between px-20">
             <button className="bg-blue-500 px-14 py-2 rounded-lg text-white">Add Student</button>
             <form>
-                <input className="w-52 border-2 border-blue-400 outline-none h-10 rounded-lg pl-2 text-2xl" type="Search" placeholder="Search Student" />
+                <input onChange={handleSearchStudent} className="w-52 border-2 border-blue-400 outline-none h-10 rounded-lg pl-2 text-2xl" type="Search" placeholder="Search Student" />
             </form>
         </div>
 
@@ -48,9 +55,11 @@ function StudentList() {
                 </tr>
             </thead>
             {
-                getStudent.map((data) => {
+                getStudent.length > 0 ? getStudent.map((data) => {
                     return <StudentData remove={() => handleDelete(data._id)} fullName={data.fullName} address={data.address} gender={data.gender} class={data.claas} phone={data.phone} data={new Date(data.createdAt).toDateString() } />
                 })
+                :
+                <p>The no Data</p>
             }
             
         </table>
